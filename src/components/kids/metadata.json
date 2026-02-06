@@ -1,0 +1,7 @@
+{
+  "name": "Adhikar - Your Legal Pal",
+  "description": "A supportive legal awareness app for Indian juveniles (10-17) featuring an AI assistant, interactive scenarios, and emergency help.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
