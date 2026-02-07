@@ -235,7 +235,15 @@ export default function SituationPage() {
                 console.error("API Error Body:", errData);
 
                 // If backend sent a specific explanation (like Deployment Error), throw that.
-                if (errData.aiExplanation) throw new Error(errData.aiExplanation);
+                // BUT if it's "Offline Mode", we actually want to show the results, not throw.
+                // However, since we are in the !response.ok block, this Code path is only for actual HTTP errors (400/500).
+
+                // My backend fix now returns 200 OK for Offline Mode, so we shouldn't even be here for that case.
+                // If we are here, it means it's a real crash or my backend fix didn't deploy.
+
+                if (errData.aiExplanation && !errData.aiExplanation.includes("Offline Mode")) {
+                    throw new Error(errData.aiExplanation);
+                }
                 if (errData.error) throw new Error(errData.error);
                 throw new Error(`Analysis failed (${response.status}). Please check your connection.`);
             }
