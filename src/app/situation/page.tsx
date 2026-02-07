@@ -226,7 +226,13 @@ export default function SituationPage() {
                 body: JSON.stringify({ situation: input, language })
             });
 
-            if (!response.ok) throw new Error('Analysis failed');
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                // If backend sent a specific explanation (like Deployment Error), throw that.
+                if (errData.aiExplanation) throw new Error(errData.aiExplanation);
+                if (errData.error) throw new Error(errData.error);
+                throw new Error('Analysis failed. Please check your connection.');
+            }
 
             const data = await response.json();
             setResult({
@@ -235,10 +241,10 @@ export default function SituationPage() {
                 aiExplanation: data.aiExplanation,
                 nextSteps: data.nextSteps
             });
-        } catch (error) {
+        } catch (error: any) {
             console.error("Analysis Error:", error);
-            // Optional: Show error toast
-            alert(t('common.error_generic') || "Something went wrong. Please try again.");
+            // Show the actual error message from backend
+            alert(error.message || t('common.error_generic') || "Something went wrong. Please try again.");
         } finally {
             setIsAnalyzing(false);
         }
