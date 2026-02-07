@@ -1,3 +1,4 @@
+'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { LOCALIZED_SCENARIOS, TRANSLATIONS } from '../constants';
@@ -78,7 +79,7 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
   const handleGenerateNext = async () => {
     if (!scenario) return;
     setStage('generating');
-    
+
     try {
       const history = allRounds.map(r => r.text);
       const newRound = await generateNextAdventureRound(
@@ -87,7 +88,7 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
         history,
         lang
       );
-      
+
       setDynamicRounds(prev => [...prev, newRound]);
       setRoundIndex(prev => prev + 1);
       setStage('playing');
@@ -103,18 +104,18 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
       setStage('playing');
       return;
     }
-    
+
     if (stage === 'feedback') {
       const currentRound = allRounds[roundIndex];
       if (selectedOption !== null && currentRound) {
         setScore(prev => prev + currentRound.options[selectedOption].points);
       }
-      
+
       if (roundIndex < allRounds.length - 1) {
         setRoundIndex(prev => prev + 1);
         setStage('playing');
         setSelectedOption(null);
-      } 
+      }
       else if (activeScenarioId && infiniteScenarios.includes(activeScenarioId)) {
         handleGenerateNext();
       }
@@ -125,15 +126,15 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
   };
 
   const getScenarioIcon = (id: string) => {
-      switch(id) {
-          case 'cyberbullying': return '💻';
-          case 'online-scams': return '🎣';
-          case 'harassment': return '🛑';
-          case 'internship-rights': return '💼';
-          case 'ragging': return '📣';
-          case 'police-questioning': return '⚖️';
-          default: return '📁';
-      }
+    switch (id) {
+      case 'cyberbullying': return '💻';
+      case 'online-scams': return '🎣';
+      case 'harassment': return '🛑';
+      case 'internship-rights': return '💼';
+      case 'ragging': return '📣';
+      case 'police-questioning': return '⚖️';
+      default: return '📁';
+    }
   };
 
   if (stage === 'translating') {
@@ -142,7 +143,7 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
         <div className="relative">
           <JusticeBot size="lg" sparkly={false} />
           <div className="absolute inset-0 flex items-center justify-center">
-             <Languages size={48} className="text-white animate-bounce" />
+            <Languages size={48} className="text-white animate-bounce" />
           </div>
         </div>
         <div className="mt-12 text-center space-y-4">
@@ -180,25 +181,24 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 space-y-4 md:space-y-0">
             <div className="flex items-center space-x-3">
-                <div className="bg-blue-600 text-white p-3 rounded-2xl shadow-lg">🚀</div>
-                <h2 className="text-2xl md:text-3xl font-black text-blue-900 tracking-tight">{t.adventures}</h2>
+              <div className="bg-blue-600 text-white p-3 rounded-2xl shadow-lg">🚀</div>
+              <h2 className="text-2xl md:text-3xl font-black text-blue-900 tracking-tight">{t.adventures}</h2>
             </div>
-            
+
             <div className="flex items-center space-x-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
-               <Filter size={18} className="text-blue-400 shrink-0" />
-               {groups.map(group => (
-                 <button
-                   key={group}
-                   onClick={() => setSelectedGroup(group)}
-                   className={`px-4 py-2 rounded-full text-xs md:text-sm font-black transition-all shrink-0 border-2 ${
-                     selectedGroup === group 
-                     ? 'bg-blue-600 text-white border-blue-600 shadow-md' 
-                     : 'bg-white text-blue-600 border-blue-100 hover:border-blue-300'
-                   }`}
-                 >
-                   {t[group]}
-                 </button>
-               ))}
+              <Filter size={18} className="text-blue-400 shrink-0" />
+              {groups.map(group => (
+                <button
+                  key={group}
+                  onClick={() => setSelectedGroup(group)}
+                  className={`px-4 py-2 rounded-full text-xs md:text-sm font-black transition-all shrink-0 border-2 ${selectedGroup === group
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-md'
+                    : 'bg-white text-blue-600 border-blue-100 hover:border-blue-300'
+                    }`}
+                >
+                  {t[group]}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -210,7 +210,7 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
                 className="group bg-white p-6 rounded-[2rem] shadow-xl border-b-8 border-blue-100 hover:border-blue-400 transition-all text-left flex items-center relative overflow-hidden active:scale-95"
               >
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                   <Play size={80} />
+                  <Play size={80} />
                 </div>
                 <div className="bg-blue-50 p-5 rounded-3xl mr-5 text-3xl md:text-4xl shadow-inner border-2 border-blue-100 shrink-0">
                   {getScenarioIcon(s.id)}
@@ -228,7 +228,7 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
               </button>
             )) : (
               <div className="col-span-full py-20 text-center">
-                 <p className="text-blue-400 font-bold italic">No adventures here yet! Check another category.</p>
+                <p className="text-blue-400 font-bold italic">No adventures here yet! Check another category.</p>
               </div>
             )}
           </div>
@@ -242,13 +242,13 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
       <div className="p-4 md:p-8 h-full flex flex-col items-center justify-center animate-in zoom-in duration-500 overflow-y-auto">
         <div className="max-w-2xl w-full flex flex-col items-center space-y-8 py-8">
           <h2 className="text-3xl md:text-4xl font-black text-blue-900 text-center">{scenario.title}</h2>
-          
+
           <div className="relative w-full aspect-square md:aspect-video bg-white rounded-[2.5rem] border-8 border-blue-100 shadow-2xl flex flex-col items-center justify-center p-8 overflow-hidden shrink-0">
             <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-transparent"></div>
             <div className="z-10 flex flex-col items-center space-y-6">
-               <div className={scenario.group === 'online' ? 'phone-shake' : 'bounce-gentle'}>
-                  <Character name="Aru" emotion="sad" size="lg" />
-               </div>
+              <div className={scenario.group === 'online' ? 'phone-shake' : 'bounce-gentle'}>
+                <Character name="Aru" emotion="sad" size="lg" />
+              </div>
             </div>
             <div className="z-10 mt-8 comic-bubble p-6 shadow-xl bg-white border-blue-400 max-w-sm">
               <p className="text-blue-900 font-bold text-center leading-relaxed text-sm md:text-base">
@@ -272,9 +272,9 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
       <div className="p-4 md:p-8 flex flex-col items-center animate-in fade-in zoom-in duration-500 overflow-y-auto min-h-full">
         <div className="max-w-3xl w-full text-center py-8">
           <div className="flex justify-center mb-8 relative">
-              <div className="w-40 h-40 md:w-48 md:h-48 bg-gradient-to-b from-yellow-300 to-yellow-500 rounded-full flex flex-col items-center justify-center text-6xl md:text-8xl shadow-[0_12px_0_rgb(161,98,7)] border-8 border-white">
-                  {scenario.badgeIcon}
-              </div>
+            <div className="w-40 h-40 md:w-48 md:h-48 bg-gradient-to-b from-yellow-300 to-yellow-500 rounded-full flex flex-col items-center justify-center text-6xl md:text-8xl shadow-[0_12px_0_rgb(161,98,7)] border-8 border-white">
+              {scenario.badgeIcon}
+            </div>
           </div>
           <h2 className="text-3xl md:text-5xl font-black text-blue-900 mb-2">{t.youDidIt}</h2>
           <p className="text-blue-500 font-bold text-lg mb-8 tracking-wide uppercase">{t.earned} <span className="text-yellow-600">{scenario.badgeName}</span></p>
@@ -311,11 +311,11 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
         <div className="flex items-center justify-between mb-8 sticky top-0 bg-white/40 p-2 backdrop-blur-sm rounded-full z-10">
           <div className="flex items-center bg-white p-2 pr-6 rounded-full shadow-md border-2 border-blue-100">
             <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-black mr-3 shadow-lg">
-                {roundIndex + 1}
+              {roundIndex + 1}
             </div>
             <div className="h-3 w-20 md:w-48 bg-blue-50 rounded-full overflow-hidden border-2 border-blue-100">
-              <div 
-                className="h-full bg-blue-500 transition-all duration-700" 
+              <div
+                className="h-full bg-blue-500 transition-all duration-700"
                 style={{ width: `${((roundIndex + 1) / (allRounds.length + (infiniteScenarios.includes(activeScenarioId || '') ? 1 : 0))) * 100}%` }}
               ></div>
             </div>
@@ -328,22 +328,22 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
         {stage === 'playing' ? (
           <div className="animate-in slide-in-from-right duration-500 flex-1 flex flex-col items-center">
             <div className="w-full max-w-3xl flex flex-col md:flex-row items-center md:items-end mb-8 space-y-4 md:space-y-0 md:space-x-4">
-                <Character name="Aru" emotion="surprised" size="md" />
-                <div className="comic-bubble p-6 md:p-8 shadow-xl bg-white border-blue-400 flex-1 w-full">
-                    {roundIndex >= (scenario?.rounds?.length || 0) && (
-                      <span className="text-[10px] bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full font-black mb-2 inline-block">ADVANCED LEVEL 🛡️</span>
-                    )}
-                    <p className="text-blue-900 font-black text-lg md:text-2xl leading-snug">{currentRound.text}</p>
-                </div>
+              <Character name="Aru" emotion="surprised" size="md" />
+              <div className="comic-bubble p-6 md:p-8 shadow-xl bg-white border-blue-400 flex-1 w-full">
+                {roundIndex >= (scenario?.rounds?.length || 0) && (
+                  <span className="text-[10px] bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full font-black mb-2 inline-block">ADVANCED LEVEL 🛡️</span>
+                )}
+                <p className="text-blue-900 font-black text-lg md:text-2xl leading-snug">{currentRound.text}</p>
+              </div>
             </div>
             <div className="grid gap-4 w-full max-w-2xl mt-auto pb-8">
-              {currentRound.options.map((opt, i) => (
+              {currentRound.options?.map((opt, i) => (
                 <button
                   key={i}
                   onClick={() => handleOptionClick(i)}
                   className="bg-white p-5 rounded-[1.5rem] border-4 border-blue-50 hover:border-blue-400 transition-all text-left text-blue-900 font-bold shadow-lg flex items-center"
                 >
-                  <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4 shrink-0 text-blue-600 font-black">{i+1}</div>
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4 shrink-0 text-blue-600 font-black">{i + 1}</div>
                   {opt.text}
                 </button>
               ))}
@@ -352,8 +352,8 @@ export const AdventureMode: React.FC<{ lang: Language }> = ({ lang }) => {
         ) : (
           <div className="animate-in slide-in-from-bottom duration-500 flex flex-col items-center max-w-3xl mx-auto w-full">
             <div className="flex -space-x-4 mb-8">
-                <Character name="Aru" emotion={selectedOption !== null && currentRound.options[selectedOption].points > 5 ? 'happy' : 'surprised'} size="lg" />
-                <JusticeBot size="md" />
+              <Character name="Aru" emotion={selectedOption !== null && currentRound.options[selectedOption].points > 5 ? 'happy' : 'surprised'} size="lg" />
+              <JusticeBot size="md" />
             </div>
             <div className={`p-6 md:p-8 rounded-[2.5rem] shadow-xl mb-8 border-b-8 w-full ${selectedOption !== null && currentRound.options[selectedOption].points > 5 ? 'bg-green-100 border-green-600' : 'bg-orange-100 border-orange-600'}`}>
               <p className="font-black text-2xl md:text-3xl text-blue-900 mb-3">

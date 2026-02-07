@@ -128,9 +128,21 @@ export default function RegisterPage() {
 
     const handleNext = () => {
         if (validateStep()) {
+            // Check for Kids App Redirect (Under 17)
+            if (step === 3) {
+                const ageNum = parseInt(formData.age);
+                if (ageNum < 17) {
+                    showAlert("Junior Citizen Detected! 🧒", "Redirecting you to Adhikar Kids Mode...", "success");
+                    setTimeout(() => {
+                        router.push('/kids');
+                    }, 2000);
+                    return; // Stop progression to next step
+                }
+            }
             setStep(prev => prev + 1);
         }
     };
+
 
     const handleRegister = () => {
         try {

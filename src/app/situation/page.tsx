@@ -10,7 +10,7 @@ import { ArrowLeft, Send, Scale, Sparkles, AlertTriangle, Info, Zap, Flame, Chec
 
 export default function SituationPage() {
     const [input, setInput] = useState('');
-    const [result, setResult] = useState<{ relevantLaws: Law[], relevantSchemes: Scheme[] } | null>(null);
+    const [result, setResult] = useState<{ relevantLaws: Law[], relevantSchemes: Scheme[], aiExplanation?: string, nextSteps?: string[] } | null>(null);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
 
     // Voice State
@@ -132,7 +132,15 @@ export default function SituationPage() {
         // Continuous Mode enabled as requested
         recognition.continuous = true;
         recognition.interimResults = true;
-        recognition.lang = 'en-US';
+
+        // Dynamic Language Selection
+        // Map 'en'->'en-US', 'hi'->'hi-IN', 'ta'->'ta-IN'
+        const langMap: Record<string, string> = {
+            'en': 'en-US',
+            'hi': 'hi-IN',
+            'ta': 'ta-IN'
+        };
+        recognition.lang = langMap[language] || 'en-US';
 
         recognition.onstart = () => {
             setIsListening(true);
@@ -221,7 +229,12 @@ export default function SituationPage() {
             if (!response.ok) throw new Error('Analysis failed');
 
             const data = await response.json();
-            setResult({ relevantLaws: data.relevantLaws, relevantSchemes: data.relevantSchemes });
+            setResult({
+                relevantLaws: data.relevantLaws,
+                relevantSchemes: data.relevantSchemes,
+                aiExplanation: data.aiExplanation,
+                nextSteps: data.nextSteps
+            });
         } catch (error) {
             console.error("Analysis Error:", error);
             // Optional: Show error toast
@@ -264,7 +277,7 @@ export default function SituationPage() {
                         <div className="relative z-10">
                             <textarea
                                 className="w-full bg-white/50 dark:bg-slate-800/50 border-2 border-slate-100 dark:border-slate-700 rounded-2xl p-6 text-lg text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-0 focus:border-transparent transition-all min-h-[180px] resize-none focus:shadow-[0_0_0_4px_rgba(168,85,247,0.2)]"
-                                placeholder={isListening ? "Listening... (Speak now)" : "Type here... or click the mic to speak."}
+                                placeholder={isListening ? t('dash.listening') || "Listening... (Speak now)" : t('dash.input_placeholder') || "Type here... or click the mic to speak."}
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                             />
@@ -341,6 +354,49 @@ export default function SituationPage() {
                         <h2 className="text-2xl font-black text-slate-900 dark:text-white">Analysis Results</h2>
                     </div>
 
+                    {/* AI Explanation Card */}
+                    {result.aiExplanation && (
+                        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 p-6 md:p-8 rounded-3xl border border-indigo-100 dark:border-indigo-800/50 shadow-lg">
+                            <div className="flex items-start gap-4">
+                                <div className="p-3 bg-indigo-600 text-white rounded-2xl shadow-lg shrink-0">
+                                    <Sparkles size={24} />
+                                </div>
+                                <div className="space-y-4">
+                                    <div>
+                                        <h3 className="text-lg font-bold text-indigo-900 dark:text-indigo-200 mb-2">My Assessment</h3>
+                                        <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-lg">
+                                            {result.aiExplanation}
+                                        </p>
+                                    </div>
+
+                                    {/* AI Suggested Next Steps */}
+                                    {result.nextSteps && result.nextSteps.length > 0 && (
+                                        <div className="bg-white/60 dark:bg-black/20 rounded-2xl p-5 border border-indigo-100 dark:border-indigo-800/30">
+                                            <h4 className="text-sm font-extrabold text-indigo-700 dark:text-indigo-400 uppercase tracking-wide mb-3 flex items-center gap-2">
+                                                <CheckCircle2 size={16} /> Recommended Actions
+                                            </h4>
+                                            <ul className="space-y-3">
+                                                {result.nextSteps.map((step, idx) => (
+                                                    <li key={idx} className="flex items-start gap-3 text-slate-800 dark:text-slate-200 font-medium">
+                                                        <span className="w-6 h-6 bg-indigo-200 dark:bg-indigo-800 text-indigo-800 dark:text-indigo-200 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">{idx + 1}</span>
+                                                        <span>{step}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+
+                                    {/* External Action Button */}
+                                    <div className="pt-2">
+                                        <a href="https://eservices.tnpolice.gov.in/CCTNSNICSDC/ComplaintRegistrationPage?6" target="_blank" rel="noopener noreferrer" className="w-full bg-red-600 hover:bg-red-700 text-white p-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-500/20 hover:shadow-red-500/40 hover:-translate-y-0.5 transition-all">
+                                            <ShieldAlert size={18} /> File Official Police Complaint
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     <div className="grid gap-8">
                         {result.relevantLaws.map((law, lawIndex) => (
                             law.sections.map((section, sectionIndex) => {
@@ -348,6 +404,9 @@ export default function SituationPage() {
                                 const title = law.title[language] || law.title['en'];
                                 const sText = section.text[language] || section.text['en'];
                                 const sSimplified = section.simplified[language] || section.simplified['en'];
+                                // Use static action guide only if AI didn't give steps, or combine? For now, we utilize AI's "Next Steps" mainly.
+                                // But we keep static actions as backup inside the card if needed, or hide them to avoid duplication.
+                                // Let's keep specific law actions if they exist.
                                 const actionSteps = law.actionGuide?.[language] || law.actionGuide?.['en'] || [];
                                 const authName = law.authority?.name[language] || law.authority?.name['en'];
 
@@ -391,9 +450,10 @@ export default function SituationPage() {
                                                     <p className="text-sm text-violet-800 dark:text-violet-200 italic">"{sSimplified}"</p>
                                                 </div>
                                                 <div className="grid md:grid-cols-2 gap-4 pt-2">
+                                                    {/* We can hide static action steps if the AI's general steps cover it, but sometimes specific steps are good. Keeping it. */}
                                                     {actionSteps.length > 0 && (
                                                         <div className="bg-emerald-50 dark:bg-emerald-900/10 rounded-2xl p-5 border border-emerald-100 dark:border-emerald-800/30">
-                                                            <h4 className="text-sm font-extrabold text-emerald-700 dark:text-emerald-400 uppercase tracking-wide mb-3 flex items-center gap-2"><CheckCircle2 size={16} /> What to do next</h4>
+                                                            <h4 className="text-sm font-extrabold text-emerald-700 dark:text-emerald-400 uppercase tracking-wide mb-3 flex items-center gap-2"><CheckCircle2 size={16} /> Law Specific Actions</h4>
                                                             <ul className="space-y-2">
                                                                 {actionSteps.map((step, idx) => (
                                                                     <li key={idx} className="flex items-start gap-2 text-sm text-emerald-900 dark:text-emerald-200 font-medium leading-tight">

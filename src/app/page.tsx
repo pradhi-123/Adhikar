@@ -141,14 +141,14 @@ export default function Home() {
           </Link>
 
           {/* Card 3: Legal Aid Directory */}
-          <Link href="/legal-aid" className="md:col-span-2 bg-gradient-to-r from-slate-900 to-slate-800 dark:from-slate-800 dark:to-slate-900 p-6 rounded-3xl text-white shadow-xl shadow-slate-900/20 dark:shadow-none relative overflow-hidden group block">
-            <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-white/20 transition-colors"></div>
+          <Link href="/legal-aid" className="md:col-span-2 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 p-6 rounded-3xl text-white shadow-xl shadow-blue-500/20 dark:shadow-none relative overflow-hidden group block hover:scale-[1.01] transition-transform">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-white/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-white/30 transition-colors"></div>
             <div className="relative z-10 flex items-center justify-between h-full">
               <div>
                 <h3 className="text-2xl font-bold mb-1">{t('dash.legal_aid')}</h3>
-                <p className="text-slate-400 text-sm">{t('dash.legal_aid_sub')}</p>
+                <p className="text-blue-100 text-sm font-medium">{t('dash.legal_aid_sub')}</p>
               </div>
-              <div className="w-16 h-16 rounded-full border-4 border-white/10 flex items-center justify-center bg-white/5">
+              <div className="w-16 h-16 rounded-full border-4 border-white/20 flex items-center justify-center bg-white/10 group-hover:bg-white/20 transition-colors">
                 <Users size={28} className="text-white" />
               </div>
             </div>
@@ -188,6 +188,14 @@ export default function Home() {
             </div>
             <h4 className="font-bold text-slate-700 dark:text-slate-200 group-hover:text-purple-700 dark:group-hover:text-purple-400 transition-colors uppercase text-[10px] tracking-widest">{t('nav.profile')}</h4>
           </Link>
+
+          {/* File Complaint - External Link */}
+          <a href="https://eservices.tnpolice.gov.in/CCTNSNICSDC/ComplaintRegistrationPage?6" target="_blank" rel="noopener noreferrer" className="md:col-span-4 bg-red-600 hover:bg-red-700 p-4 rounded-2xl text-white shadow-lg shadow-red-500/30 hover:shadow-red-500/50 hover:scale-[1.01] transition-all flex items-center justify-center gap-3 group mt-4">
+            <div className="p-2 bg-white/20 rounded-full group-hover:rotate-12 transition-transform">
+              <Siren size={20} className="animate-pulse" />
+            </div>
+            <span className="font-bold text-lg tracking-wide">File an Official Police Complaint</span>
+          </a>
         </div>
 
       </div>

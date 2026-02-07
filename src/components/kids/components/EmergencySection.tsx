@@ -1,3 +1,4 @@
+'use client';
 
 import React, { useState } from 'react';
 import { LOCALIZED_HELPLINES, STATES, TRANSLATIONS } from '../constants';
@@ -10,7 +11,7 @@ export const EmergencySection: React.FC<{ lang: Language }> = ({ lang }) => {
   const t = TRANSLATIONS[lang];
   const helplines = LOCALIZED_HELPLINES[lang];
 
-  const filteredHelplines = helplines.filter(h => 
+  const filteredHelplines = helplines.filter(h =>
     selectedState === 'All India' || h.state === selectedState || !h.state
   );
 
@@ -23,7 +24,7 @@ export const EmergencySection: React.FC<{ lang: Language }> = ({ lang }) => {
             <p className="text-red-600 text-sm md:text-base font-bold">{t.emergencySubtitle}</p>
           </div>
           <div className="p-4 bg-red-100 rounded-3xl shadow-lg rotate-6">
-              <ShieldAlert className="text-red-500" size={40} />
+            <ShieldAlert className="text-red-500" size={40} />
           </div>
         </div>
 
@@ -54,9 +55,9 @@ export const EmergencySection: React.FC<{ lang: Language }> = ({ lang }) => {
               </div>
               <div className="flex items-center justify-between mt-6">
                 <div className="text-2xl md:text-3xl font-black text-red-600 tracking-tighter">
-                    {h.number}
+                  {h.number}
                 </div>
-                <a 
+                <a
                   href={`tel:${h.number}`}
                   className="bg-red-500 text-white p-5 rounded-2xl shadow-[0_8px_0_rgb(153,27,27)] transition-all flex items-center justify-center shrink-0"
                 >
@@ -69,19 +70,19 @@ export const EmergencySection: React.FC<{ lang: Language }> = ({ lang }) => {
 
         <div className="mt-12 bg-blue-100/50 p-6 md:p-8 rounded-[2.5rem] border-4 border-blue-200 shadow-lg relative overflow-hidden">
           <div className="absolute -right-8 -bottom-8 opacity-10">
-             <ShieldAlert size={120} />
+            <ShieldAlert size={120} />
           </div>
           <h3 className="font-black text-xl md:text-2xl text-blue-900 mb-4 flex items-center">
-              <Info size={24} className="mr-3 text-blue-600" /> {t.legalAidTitle}
+            <Info size={24} className="mr-3 text-blue-600" /> {t.legalAidTitle}
           </h3>
           <p className="text-sm md:text-base text-blue-800 leading-relaxed mb-6 font-bold max-w-2xl">
-              {t.legalAidText}
+            {t.legalAidText}
           </p>
           <button className="w-full md:w-auto bg-white text-blue-600 font-black py-4 px-8 rounded-2xl shadow-md border-b-4 border-blue-200 transition-all flex items-center justify-center text-sm md:text-base">
-              {t.visitNalsa} <ExternalLink size={16} className="ml-2" />
+            {t.visitNalsa} <ExternalLink size={16} className="ml-2" />
           </button>
         </div>
-        
+
         <div className="mt-10 bg-gray-100/50 p-5 rounded-2xl text-[11px] md:text-xs text-gray-400 text-center font-bold">
           {t.disclaimer}
         </div>

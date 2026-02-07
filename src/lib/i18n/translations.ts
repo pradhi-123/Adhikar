@@ -27,6 +27,8 @@ export const translations = {
         'dash.hero_title': 'Facing a legal issue?',
         'dash.hero_subtitle': 'Let Adhikar analyze it for you.',
         'dash.hero_desc': 'Describe your situation in simple words. Our AI will instantly find relevant Laws, Acts, and Government Schemes to help you.',
+        'dash.listening': 'Listening... (Speak now)',
+        'dash.input_placeholder': 'Type here... or click the mic to speak.',
 
         // Generic
         'common.loading': 'Loading...',
@@ -110,6 +112,8 @@ export const translations = {
         'dash.hero_title': 'कानूनी समस्या का सामना कर रहे हैं?',
         'dash.hero_subtitle': 'अधिकार को आपके लिए इसका विश्लेषण करने दें।',
         'dash.hero_desc': 'अपनी स्थिति को सरल शब्दों में बताएं। हमारा AI आपकी सहायता के लिए तुरंत प्रासंगिक कानून, अधिनियम और सरकारी योजनाएं खोजेगा।',
+        'dash.listening': 'सुन रहा हूं... (अब बोलें)',
+        'dash.input_placeholder': 'यहाँ टाइप करें... या बोलने के लिए माइक पर क्लिक करें।',
 
         // Generic
         'common.loading': 'लोड हो रहा है...',
@@ -193,6 +197,8 @@ export const translations = {
         'dash.hero_title': 'சட்ட சிக்கலை எதிர்கொள்கிறீர்களா?',
         'dash.hero_subtitle': 'அதிகார் அதை உங்களுக்காக பகுப்பாய்வு செய்யட்டும்.',
         'dash.hero_desc': 'உங்கள் சூழ்நிலையை எளிய சொற்களில் விவரிக்கவும். உங்களுக்கு உதவ எங்கள் AI உடனடியாக தொடர்புடைய சட்டங்கள், விதிகள் மற்றும் அரசு திட்டங்களைக் கண்டறியும்.',
+        'dash.listening': 'கேட்கிறது... (இப்போது பேசுங்கள்)',
+        'dash.input_placeholder': 'இங்கே தட்டச்சு செய்யவும்... அல்லது பேச மைக் ஐகானைக் கிளிக் செய்யவும்.',
 
         // Generic
         'common.loading': 'ஏற்றுகிறது...',

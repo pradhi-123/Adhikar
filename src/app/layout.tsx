@@ -3,6 +3,7 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Sidebar from '@/components/layout/Sidebar';
+import MobileHeader from '@/components/layout/MobileHeader';
 import BottomNav from '@/components/layout/BottomNav';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { ThemeProvider } from '@/context/ThemeContext';
@@ -25,7 +26,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
     }
   }, [user, isLoading, pathname, router]);
 
-  const showNav = user && pathname !== '/login' && pathname !== '/register';
+  const showNav = user && pathname !== '/login' && pathname !== '/register' && !pathname.startsWith('/kids');
 
   if (isLoading) return (
     <div className="flex h-screen items-center justify-center bg-slate-50 text-blue-600">
@@ -38,6 +39,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
       {showNav && (
         <>
           <Sidebar />
+          <MobileHeader />
           <BottomNav />
         </>
       )}

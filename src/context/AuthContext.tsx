@@ -32,10 +32,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         if (!isLoading) {
             const publicPaths = ['/login', '/register'];
+            const isKid = user && Number(user.age) < 17;
+
+            // 1. Unauthenticated User attempting to access protected routes
             if (!user && !publicPaths.includes(pathname)) {
                 router.push('/login');
-            } else if (user && publicPaths.includes(pathname)) {
-                router.push('/');
+                return;
+            }
+
+            // 2. Authenticated User on Public Pages (Login/Register) -> Redirect to respective dashboard
+            if (user && publicPaths.includes(pathname)) {
+                if (isKid) {
+                    router.push('/kids');
+                } else {
+                    router.push('/');
+                }
+                return;
+            }
+
+            // 3. Strict Dashboard Segregation
+            if (user) {
+                if (isKid && !pathname.startsWith('/kids')) {
+                    // Kid trying to access Main App -> Force Kids Mode
+                    router.push('/kids');
+                } else if (!isKid && pathname.startsWith('/kids')) {
+                    // Adult trying to access Kids App -> Force Main App
+                    router.push('/');
+                }
             }
         }
     }, [user, isLoading, pathname, router]);
@@ -43,8 +66,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const login = (profile: UserProfile) => {
         setUser(profile);
         localStorage.setItem('adhikar_user', JSON.stringify(profile));
-        router.push('/');
+
+        if (Number(profile.age) < 17) {
+            router.push('/kids');
+        } else {
+            router.push('/');
+        }
     };
+
 
     const logout = () => {
         setUser(null);

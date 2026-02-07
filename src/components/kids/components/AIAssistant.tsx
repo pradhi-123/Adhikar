@@ -1,3 +1,4 @@
+'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { JusticeBot } from './JusticeBot';
@@ -85,39 +86,39 @@ export const AIAssistant: React.FC<{ lang: Language }> = ({ lang }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-yellow-400 rounded-3xl p-6 shadow-lg border-b-8 border-yellow-600 transform -rotate-1 h-full">
-                    <div className="flex items-center mb-3">
-                        <Sparkles className="text-white mr-2" />
-                        <h4 className="text-blue-900 font-black text-xl md:text-2xl uppercase tracking-wider">{t.rightsTitle}!</h4>
-                    </div>
-                    <p className="text-blue-900 font-bold leading-relaxed">{response.yourRight}</p>
+                  <div className="flex items-center mb-3">
+                    <Sparkles className="text-white mr-2" />
+                    <h4 className="text-blue-900 font-black text-xl md:text-2xl uppercase tracking-wider">{t.rightsTitle}!</h4>
+                  </div>
+                  <p className="text-blue-900 font-bold leading-relaxed">{response.yourRight}</p>
                 </div>
 
                 <div className="bg-white rounded-3xl p-6 shadow-lg border-b-4 border-green-200 h-full">
-                    <h4 className="text-green-600 font-black text-lg md:text-xl mb-4 flex items-center">
-                        🚀 {t.actionTitle}
-                    </h4>
-                    <div className="space-y-3">
-                        {response.whatYouCanDo.map((step, i) => (
-                            <div key={i} className="flex items-center bg-green-50 p-3 rounded-2xl border-2 border-green-100 text-blue-900 font-medium text-sm md:text-base">
-                                <span className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center mr-3 font-bold text-green-700 shrink-0">{i+1}</span>
-                                {step}
-                            </div>
-                        ))}
-                    </div>
+                  <h4 className="text-green-600 font-black text-lg md:text-xl mb-4 flex items-center">
+                    🚀 {t.actionTitle}
+                  </h4>
+                  <div className="space-y-3">
+                    {response.whatYouCanDo.map((step, i) => (
+                      <div key={i} className="flex items-center bg-green-50 p-3 rounded-2xl border-2 border-green-100 text-blue-900 font-medium text-sm md:text-base">
+                        <span className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center mr-3 font-bold text-green-700 shrink-0">{i + 1}</span>
+                        {step}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               <div className="bg-purple-600 rounded-3xl p-6 shadow-lg text-white">
-                  <h4 className="font-black text-lg md:text-xl mb-4 flex items-center">
-                      📞 {t.helpTitle}
-                  </h4>
-                  <div className="flex flex-wrap gap-2 md:gap-4">
-                      {response.needHelp.map((help, i) => (
-                          <span key={i} className="bg-white/20 px-4 py-2 rounded-xl font-bold text-white border border-white/30 backdrop-blur-sm text-sm md:text-base">
-                              {help}
-                          </span>
-                      ))}
-                  </div>
+                <h4 className="font-black text-lg md:text-xl mb-4 flex items-center">
+                  📞 {t.helpTitle}
+                </h4>
+                <div className="flex flex-wrap gap-2 md:gap-4">
+                  {response.needHelp.map((help, i) => (
+                    <span key={i} className="bg-white/20 px-4 py-2 rounded-xl font-bold text-white border border-white/30 backdrop-blur-sm text-sm md:text-base">
+                      {help}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               <div ref={scrollRef} className="h-4" />

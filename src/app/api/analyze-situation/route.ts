@@ -1,113 +1,99 @@
 import { NextResponse } from "next/server";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { laws } from "@/lib/data/laws";
 import { schemes } from "@/lib/data/schemes";
 
-// --- MOCK LOGIC FOR SIMULATION MODE ---
-// This acts as a fallback or primary engine when API keys are missing/failing.
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY || '');
 
 export async function POST(req: Request) {
     try {
         const { situation, language } = await req.json();
-        const query = situation.toLowerCase();
 
-        // --- INTELLIGENT TOPIC MAPPING ---
-        // Maps common words to specific Law IDs to improve relevance 
-        const topicMap: Record<string, string[]> = {
-            'consumer-2019': ['shop', 'buy', 'product', 'item', 'defective', 'bill', 'warranty', 'refund', 'service', 'fraud', 'cheat', 'price', 'mrp'],
-            'mva-1988': ['car', 'bike', 'scooter', 'traffic', 'police', 'fine', 'challan', 'speed', 'accident', 'license', 'rto', 'drive', 'road'],
-            'it-act-2000': ['online', 'internet', 'cyber', 'scam', 'hack', 'password', 'bank', 'upi', 'money', 'transfer', 'fake', 'profile', 'data'],
-            'senior-2007': ['old', 'parent', 'father', 'mother', 'son', 'daughter', 'abandon', 'property', 'maintenance', 'care', 'age'],
-            'bns-women': ['girl', 'woman', 'lady', 'wife', 'harass', 'stalk', 'touch', 'abuse', 'dowry', 'domestic', 'violence'],
-            'rti-2005': ['government', 'official', 'office', 'delay', 'status', 'application', 'reply', 'fund', 'money', 'road', 'water'],
-            'dv-act-2005': ['domestic', 'violence', 'husband', 'wife', 'beat', 'hit', 'torture', 'abuse', 'home', 'evict', 'maike', 'sasural'],
-            'hsa-2005': ['property', 'land', 'ancestral', 'share', 'partition', 'heir', 'father', 'brother', 'sister', 'will', 'inheritance'],
-            'dowry-act': ['dowry', 'marriage', 'cash', 'demand', 'gold', 'car', 'groom', 'bride', 'wedding', 'gift']
-        };
+        // Use Gemini 2.5 Flash for high intelligence and speed
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
+        // Create a mini-index of laws for the AI context (optimizing token usage)
+        const lawIndex = laws.map(l => `ID: ${l.id} | Category: ${l.category} | Title: ${l.title.en} | Desc: ${l.description.en.substring(0, 150)}`).join('\n');
+        const schemeIndex = schemes.map(s => `ID: ${s.id} | Category: ${s.category} | Title: ${s.title.en} | Desc: ${s.description.en.substring(0, 150)}`).join('\n');
 
-        let boostedLawIds: string[] = [];
+        const systemPrompt = `
+            You are a Senior Legal Advisor for Indian Citizens.
+            Your task is to analyze a user's situation and identify the MOST relevant Indian Laws and Government Schemes from the provided list.
+            
+            Available Laws:
+            ${lawIndex}
 
-        // Check for topic matches
-        Object.entries(topicMap).forEach(([lawId, keywords]) => {
-            if (keywords.some(k => query.includes(k))) {
-                boostedLawIds.push(lawId);
+            Available Schemes:
+            ${schemeIndex}
+
+            User Situation: "${situation}"
+            User Language: ${language}
+
+            CRITICAL RULES:
+            1. ONLY select laws that are DIRECTLY relevant to the specific problem.
+            2. Do NOT select "Constitution of India" unless it is a violation of Fundamental Rights by the State/Police. For private disputes (theft, fraud, family), choose specific acts (Consumer, BNS, etc.).
+            3. Do NOT select "Women's Safety" laws for property/theft issues unless a woman is the victim.
+            4. Return ONLY a valid JSON object. No markdown.
+            
+            Output JSON Format:
+            {
+                "lawIds": ["exact_id_from_list_1"],
+                "schemeIds": ["exact_id_from_list"],
+                "explanation": "A short, empathetic explanation of why these laws apply, in the user's language ("${language}").",
+                "nextSteps": ["Step 1", "Step 2"]
             }
-        });
+        `;
 
-        // 1. Filter Laws with Boost Logic
-        let matchedLaws = laws.filter(law => {
-            // Priority 1: Direct Topic Match
-            if (boostedLawIds.includes(law.id)) return true;
+        const result = await model.generateContent(systemPrompt);
+        const response = result.response;
+        let text = response.text();
 
-            // Priority 2: Text Search
-            const searchText = (
-                law.title.en + " " +
-                law.description.en
-            ).toLowerCase();
+        console.log("AI Analysis Response:", text);
 
-            return query.split(' ').some((word: string) =>
-                word.length > 3 && searchText.includes(word)
-            );
-        }).sort((a, b) => {
-            // Sort boosted items first
-            const aBoost = boostedLawIds.includes(a.id) ? 1 : 0;
-            const bBoost = boostedLawIds.includes(b.id) ? 1 : 0;
-            return bBoost - aBoost;
-        });
+        // Clean JSON
+        text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+        const aiData = JSON.parse(text);
 
+        // Hydrate the response with full objects based on AI's selected IDs
+        const relevantLaws = laws
+            .filter(l => aiData.lawIds?.includes(l.id))
+            .map(l => ({
+                ...l,
+                aiReason: aiData.explanation // Sharing the main explanation for now, or could ask for per-law logic
+            }));
 
-        // 2. Keyword Matching for SCHEMES
-        let matchedSchemes = schemes.filter(scheme => {
-            const searchText = (
-                scheme.title.en + " " +
-                scheme.description.en
-            ).toLowerCase();
+        const relevantSchemes = schemes
+            .filter(s => aiData.schemeIds?.includes(s.id))
+            .map(s => ({
+                ...s,
+                aiReason: "Recommended based on your situation."
+            }));
 
-
-            return query.split(' ').some((word: string) =>
-                word.length > 3 && searchText.includes(word)
-            );
-        });
-
-        // Fallback Scheme
-        if (matchedSchemes.length === 0) {
-            // Just pick the first one as a generic fallback (usually NREGA or similar)
-            if (schemes.length > 0) matchedSchemes.push(schemes[0]);
-        }
-
-        matchedSchemes = matchedSchemes.slice(0, 2);
-
-
-        // 3. Hydrate Response
-        const relevantLaws = matchedLaws.map(law => ({
-            ...law,
-            // Mock AI Reason
-            aiReason: language === 'hi'
-                ? "आपके विवरण के आधार पर, यह कानून सीधे आपकी स्थिति से संबंधित है।"
-                : language === 'ta'
-                    ? "உங்கள் விவரங்களின் அடிப்படையில், இந்த சட்டம் உங்கள் சூழ்நிலைக்கு நேரடியாக தொடர்புடையது."
-                    : "Based on your description, this law is directly relevant to your rights."
-        }));
-
-        const relevantSchemes = matchedSchemes.map(scheme => ({
-            ...scheme,
-            aiReason: language === 'hi'
-                ? "आप इस योजना के लिए पात्र हो सकते हैं।"
-                : language === 'ta'
-                    ? "நீங்கள் இந்த திட்டத்திற்கு தகுதி பெறலாம்."
-                    : "You may be eligible for benefits under this government scheme."
-        }));
-
-        // Simulate Network Delay for "AI Feel"
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        // If AI matches nothing (unlikely with this model), fallback to at least showing something relevant via keywords
+        // (You could keep the old logic as a 'catch' block or secondary fallback here if needed)
 
         return NextResponse.json({
             relevantLaws,
-            relevantSchemes
+            relevantSchemes,
+            aiExplanation: aiData.explanation,
+            nextSteps: aiData.nextSteps
         });
 
-    } catch (error) {
-        console.error("Mock Analysis Error:", error);
-        return NextResponse.json({ error: "Failed to analyze situation." }, { status: 500 });
+    } catch (error: any) {
+        console.error("AI Analysis Error:", error);
+
+        // FALLBACK TO MOCK LOGIC IN CASE OF AI FAILURE (e.g. Quota/Network)
+        // Re-implementing a simplified version of the keyword match for resilience
+        const query = (await req.clone().json()).situation.toLowerCase();
+
+        const fallbackLaws = laws.filter(l =>
+            (l.title.en + l.description.en).toLowerCase().includes(query.split(' ')[0])
+        ).slice(0, 2);
+
+        return NextResponse.json({
+            relevantLaws: fallbackLaws,
+            relevantSchemes: [],
+            aiExplanation: "We are having trouble accessing the AI legal brain explicitly, but here are some laws that might match."
+        });
     }
 }
