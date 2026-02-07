@@ -5,12 +5,8 @@ export async function POST(req: Request) {
     try {
         const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
         if (!apiKey) {
-            return NextResponse.json({
-                whatIsHappening: "System Error: Missing API Key",
-                yourRight: "The developer needs to configure the 'GOOGLE_GEMINI_API_KEY' in the deployment settings.",
-                whatYouCanDo: ["Tell the developer to check the Deployment Guide."],
-                needHelp: ["1098"]
-            });
+            console.warn("Kids API: Key Missing - using fallback.");
+            throw new Error("API_KEY_MISSING");
         }
 
         const genAI = new GoogleGenerativeAI(apiKey);
@@ -102,10 +98,12 @@ export async function POST(req: Request) {
         });
 
         // Return Mock/Fallback if AI fails
+        // Return Mock/Fallback if AI fails
+        const isKeyError = error.message?.includes("API_KEY");
         return NextResponse.json({
-            whatIsHappening: "I'm having trouble connecting to my law books right now.",
-            yourRight: "You always have the right to be safe.",
-            whatYouCanDo: ["Talk to an adult.", "Call 1098."],
+            whatIsHappening: isKeyError ? "I'm working in Offline Mode right now." : "I'm having a little trouble connecting to my books.",
+            yourRight: "Every child has the right to be heard and protected.",
+            whatYouCanDo: ["Talk to a trusted adult.", "Call Childline at 1098."],
             needHelp: ["1098", "112"]
         });
     }
