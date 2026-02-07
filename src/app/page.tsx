@@ -190,7 +190,7 @@ export default function Home() {
           </Link>
 
           {/* File Complaint - External Link */}
-          <a href="https://eservices.tnpolice.gov.in/CCTNSNICSDC/ComplaintRegistrationPage?6" target="_blank" rel="noopener noreferrer" className="md:col-span-4 bg-red-600 hover:bg-red-700 p-4 rounded-2xl text-white shadow-lg shadow-red-500/30 hover:shadow-red-500/50 hover:scale-[1.01] transition-all flex items-center justify-center gap-3 group mt-4">
+          <a href="https://eservices.tnpolice.gov.in/CCTNSNICSDC/ComplaintRegistrationPage?6" target="_blank" rel="noopener noreferrer" className="col-span-2 md:col-span-4 bg-red-600 hover:bg-red-700 p-4 rounded-2xl text-white shadow-lg shadow-red-500/30 hover:shadow-red-500/50 hover:scale-[1.01] transition-all flex items-center justify-center gap-3 group mt-4">
             <div className="p-2 bg-white/20 rounded-full group-hover:rotate-12 transition-transform">
               <Siren size={20} className="animate-pulse" />
             </div>

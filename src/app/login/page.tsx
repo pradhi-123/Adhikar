@@ -186,6 +186,10 @@ export default function LoginPage() {
 
             {/* Right Side */}
             <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative overflow-hidden bg-slate-50">
+                {/* Mobile Background Decor */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/20 rounded-full blur-[80px] mix-blend-multiply lg:hidden animate-pulse"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-400/20 rounded-full blur-[80px] mix-blend-multiply lg:hidden animate-pulse" style={{ animationDelay: '1s' }}></div>
+
                 <div className="absolute inset-0 dot-pattern opacity-30 -z-10"></div>
 
                 <div className="w-full max-w-[500px] relative z-10 holo-gradient-border p-[3px]">
