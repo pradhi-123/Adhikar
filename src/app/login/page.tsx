@@ -221,6 +221,9 @@ export default function LoginPage() {
                                             maxLength={10}
                                         />
                                     </div>
+                                    <p className="text-xs text-slate-400 mt-2 ml-1">
+                                        Demo Access: <span className="font-mono font-bold text-blue-500 cursor-pointer" onClick={() => setMobile('9876543210')}>98765-43210</span> (Click to autofill)
+                                    </p>
                                 </div>
 
                                 <button

@@ -3,13 +3,22 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { laws } from "@/lib/data/laws";
 import { schemes } from "@/lib/data/schemes";
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY || '');
-
 export async function POST(req: Request) {
     try {
         const { situation, language } = await req.json();
 
+        const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
+        if (!apiKey) {
+            console.error("CRITICAL: GOOGLE_GEMINI_API_KEY is missing.");
+            return NextResponse.json({
+                aiExplanation: "DEPLOYMENT ERROR: The 'GOOGLE_GEMINI_API_KEY' is missing in your Vercel/Netlify settings. Please inspect the 'Deployment Guide' artifact for instructions.",
+                relevantLaws: [],
+                relevantSchemes: []
+            }, { status: 500 });
+        }
+
         // Use Gemini 2.5 Flash for high intelligence and speed
+        const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
         // Create a mini-index of laws for the AI context (optimizing token usage)
