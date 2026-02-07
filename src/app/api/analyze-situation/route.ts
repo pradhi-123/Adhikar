@@ -97,11 +97,11 @@ export async function POST(req: Request) {
     } catch (error: any) {
         console.error("AI Analysis Error - Full Details:", error);
 
-        // Check for specific API Key errors to help the user
+        let errorMsg = "We are currently experiencing high traffic";
+
+        // Check for specific API Key errors to help the user (but do NOT block them)
         if (error.message?.includes('API_KEY_INVALID') || error.message?.includes('403')) {
-            return NextResponse.json({
-                error: "Invalid API Key. Please check your .env.local file or Vercel settings."
-            }, { status: 403 });
+            errorMsg = "Offline Mode: Using local legal database (API Key Invalid)";
         }
 
         // FALLBACK TO SIMPLE KEYWORD MATCHING
@@ -116,7 +116,7 @@ export async function POST(req: Request) {
         return NextResponse.json({
             relevantLaws: fallbackLaws,
             relevantSchemes: [],
-            aiExplanation: `We are currently experiencing high traffic or connection issues with our AI Brain. Showing you some laws that might be relevant based on keywords. (Debug: ${error.message})`,
+            aiExplanation: `${errorMsg}. Showing you some laws that might be relevant based on keywords. (Debug: ${error.message})`,
         });
     }
 }
