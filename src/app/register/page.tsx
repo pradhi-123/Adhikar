@@ -345,18 +345,18 @@ export default function RegisterPage() {
             </div>
 
             {/* RIGHT SIDE: Content Area */}
-            <div className="w-full lg:w-7/12 flex items-center justify-center p-6 relative bg-slate-50 overflow-y-auto">
+            <div className="w-full lg:w-7/12 flex items-center justify-center p-6 relative bg-slate-50 dark:bg-slate-950 overflow-y-auto">
                 {/* Right Side Background Decoration */}
-                <div className="absolute inset-0 dot-pattern opacity-30 -z-10"></div>
-                <div className="absolute top-[-20%] right-[-20%] w-[500px] h-[500px] bg-gradient-to-br from-blue-200/40 to-cyan-200/40 rounded-full blur-[100px] -z-10 animate-pulse"></div>
+                <div className="absolute inset-0 dot-pattern opacity-30 -z-10 dark:opacity-10"></div>
+                <div className="absolute top-[-20%] right-[-20%] w-[500px] h-[500px] bg-gradient-to-br from-blue-200/40 to-cyan-200/40 rounded-full blur-[100px] -z-10 animate-pulse dark:opacity-20"></div>
 
                 <div className="w-full max-w-xl my-auto">
                     <div className="mb-8 text-center lg:text-left">
                         <Link href="/login" className="lg:hidden inline-block mb-4 text-blue-600 font-bold flex items-center gap-2 justify-center"><ChevronLeft size={16} /> Back to Login</Link>
                         <div className="flex justify-between items-end">
                             <div>
-                                <h2 className="text-3xl font-bold text-slate-900">Create Account</h2>
-                                <p className="text-slate-500 mt-1">Step {step} of 4</p>
+                                <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Create Account</h2>
+                                <p className="text-slate-500 dark:text-slate-400 mt-1">Step {step} of 4</p>
                             </div>
                             <div className="hidden sm:block text-right">
                                 <p className="text-sm text-slate-400 font-semibold">Already a member?</p>
@@ -366,7 +366,7 @@ export default function RegisterPage() {
                     </div>
 
                     {/* Simple Progress Bar for right side */}
-                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden mb-10">
+                    <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-10">
                         <div
                             className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-500 ease-out"
                             style={{ width: `${(step / 4) * 100}%` }}
@@ -377,7 +377,7 @@ export default function RegisterPage() {
                     <div className="flex justify-between mb-10 px-2 lg:px-8">
                         {[1, 2, 3, 4].map((i) => (
                             <div key={i} className={`flex flex-col items-center gap-2 transition-all duration-500 ${step === i ? 'opacity-100 scale-110' : step > i ? 'opacity-50' : 'opacity-30'}`}>
-                                <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${step === i ? 'border-blue-600 text-blue-600 bg-blue-50' : step > i ? 'border-green-500 text-green-500 bg-green-50' : 'border-slate-300 text-slate-300'}`}>
+                                <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${step === i ? 'border-blue-600 text-blue-600 bg-blue-50 dark:bg-blue-900/30' : step > i ? 'border-green-500 text-green-500 bg-green-50 dark:bg-green-900/30' : 'border-slate-300 dark:border-slate-700 text-slate-300 dark:text-slate-600'}`}>
                                     {step > i ? <CheckCircle size={20} /> : (
                                         <>
                                             {i === 1 && <Fingerprint size={20} />}
@@ -387,31 +387,31 @@ export default function RegisterPage() {
                                         </>
                                     )}
                                 </div>
-                                <span className="text-[10px] font-bold uppercase tracking-wider">{i === 1 ? 'Identity' : i === 2 ? 'Mobile' : i === 3 ? 'Details' : 'Confirm'}</span>
+                                <span className="text-[10px] font-bold uppercase tracking-wider dark:text-slate-400">{i === 1 ? 'Identity' : i === 2 ? 'Mobile' : i === 3 ? 'Details' : 'Confirm'}</span>
                             </div>
                         ))}
                     </div>
 
                     {/* Render Step Content with NEON BORDER */}
                     <div className="holo-gradient-border p-[3px]">
-                        <div className="bg-white/95 backdrop-blur-xl p-8 sm:p-10 rounded-[2.5rem] shadow-xl shadow-slate-200/50 min-h-[400px] flex flex-col justify-between relative overflow-hidden h-full">
+                        <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-8 sm:p-10 rounded-[2.5rem] shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 min-h-[400px] flex flex-col justify-between relative overflow-hidden h-full">
                             {/* Decorative background blob inside form */}
-                            <div className="absolute top-[-50px] right-[-50px] w-32 h-32 bg-blue-50 rounded-full filter blur-2xl z-0 pointer-events-none"></div>
+                            <div className="absolute top-[-50px] right-[-50px] w-32 h-32 bg-blue-50 dark:bg-blue-900/20 rounded-full filter blur-2xl z-0 pointer-events-none"></div>
 
                             <div className="relative z-10 text-left">
                                 {step === 1 && (
                                     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
                                         <div>
-                                            <h3 className="text-xl font-bold text-slate-800">Aadhaar Identification</h3>
-                                            <p className="text-slate-500 text-sm">Govt. trusted verification source.</p>
+                                            <h3 className="text-xl font-bold text-slate-800 dark:text-white">Aadhaar Identification</h3>
+                                            <p className="text-slate-500 dark:text-slate-400 text-sm">Govt. trusted verification source.</p>
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2 block ml-1">Aadhaar Number</label>
+                                            <label className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-2 block ml-1">Aadhaar Number</label>
                                             <input
                                                 name="aadhaarId"
                                                 type="text"
                                                 placeholder="XXXX XXXX XXXX"
-                                                className={`input-premium w-full px-6 py-4 rounded-xl text-center text-2xl font-mono tracking-widest placeholder:text-slate-300 font-bold ${isValid('aadhaarId') === false ? 'border-red-300 bg-red-50' : ''}`}
+                                                className={`input-premium w-full px-6 py-4 rounded-xl text-center text-2xl font-mono tracking-widest placeholder:text-slate-300 font-bold dark:bg-slate-800 dark:text-white dark:border-slate-700 ${isValid('aadhaarId') === false ? 'border-red-300 bg-red-50 dark:bg-red-900/20' : ''}`}
                                                 value={formData.aadhaarId}
                                                 onChange={handleInputChange}
                                                 onBlur={() => handleBlur('aadhaarId')}
@@ -426,20 +426,20 @@ export default function RegisterPage() {
                                 {step === 2 && (
                                     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
                                         <div>
-                                            <h3 className="text-xl font-bold text-slate-800">Primary Contact</h3>
-                                            <p className="text-slate-500 text-sm">Link your mobile for OTP services.</p>
+                                            <h3 className="text-xl font-bold text-slate-800 dark:text-white">Primary Contact</h3>
+                                            <p className="text-slate-500 dark:text-slate-400 text-sm">Link your mobile for OTP services.</p>
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2 block ml-1">Mobile Number</label>
+                                            <label className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-2 block ml-1">Mobile Number</label>
                                             <div className="relative">
-                                                <div className="absolute left-0 top-0 bottom-0 w-16 bg-slate-100 rounded-l-xl flex items-center justify-center text-slate-500 font-bold border-r border-slate-200">
+                                                <div className="absolute left-0 top-0 bottom-0 w-16 bg-slate-100 dark:bg-slate-800/80 rounded-l-xl flex items-center justify-center text-slate-500 dark:text-slate-400 font-bold border-r border-slate-200 dark:border-slate-700">
                                                     +91
                                                 </div>
                                                 <input
                                                     name="mobile"
                                                     type="tel"
                                                     placeholder="98765 43210"
-                                                    className={`input-premium w-full pl-20 pr-12 py-4 rounded-xl text-xl font-bold ${isValid('mobile') === false ? 'border-red-300 bg-red-50' : ''}`}
+                                                    className={`input-premium w-full pl-20 pr-12 py-4 rounded-xl text-xl font-bold dark:bg-slate-800 dark:text-white dark:border-slate-700 ${isValid('mobile') === false ? 'border-red-300 bg-red-50 dark:bg-red-900/20' : ''}`}
                                                     value={formData.mobile}
                                                     onChange={handleInputChange}
                                                     onBlur={() => handleBlur('mobile')}
@@ -455,21 +455,21 @@ export default function RegisterPage() {
                                 {step === 3 && (
                                     <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500">
                                         <div className="relative">
-                                            <label className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1 block ml-1">Full Name</label>
+                                            <label className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1 block ml-1">Full Name</label>
                                             <input
                                                 name="name" type="text" placeholder="e.g. Rahul Kumar"
-                                                className="input-premium w-full px-5 py-3 rounded-xl font-semibold"
+                                                className="input-premium w-full px-5 py-3 rounded-xl font-semibold dark:bg-slate-800 dark:text-white dark:border-slate-700"
                                                 value={formData.name} onChange={handleInputChange} onBlur={() => handleBlur('name')}
                                             />
                                         </div>
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
-                                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block ml-1">Age</label>
-                                                <input name="age" type="number" placeholder="25" className="input-premium w-full px-5 py-3 rounded-xl font-semibold" value={formData.age} onChange={handleInputChange} />
+                                                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 block ml-1">Age</label>
+                                                <input name="age" type="number" placeholder="25" className="input-premium w-full px-5 py-3 rounded-xl font-semibold dark:bg-slate-800 dark:text-white dark:border-slate-700" value={formData.age} onChange={handleInputChange} />
                                             </div>
                                             <div>
-                                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block ml-1">Gender</label>
-                                                <select name="gender" className="input-premium w-full px-5 py-3 rounded-xl font-semibold" value={formData.gender} onChange={handleInputChange}>
+                                                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 block ml-1">Gender</label>
+                                                <select name="gender" className="input-premium w-full px-5 py-3 rounded-xl font-semibold dark:bg-slate-800 dark:text-white dark:border-slate-700" value={formData.gender} onChange={handleInputChange}>
                                                     <option>Male</option>
                                                     <option>Female</option>
                                                     <option>Other</option>
@@ -478,15 +478,15 @@ export default function RegisterPage() {
                                         </div>
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
-                                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block ml-1">State</label>
-                                                <select name="state" className="input-premium w-full px-5 py-3 rounded-xl text-sm font-semibold" value={formData.state} onChange={handleInputChange}>
+                                                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 block ml-1">State</label>
+                                                <select name="state" className="input-premium w-full px-5 py-3 rounded-xl text-sm font-semibold dark:bg-slate-800 dark:text-white dark:border-slate-700" value={formData.state} onChange={handleInputChange}>
                                                     <option value="">Select</option>
                                                     {Object.keys(INDIAN_STATES).map(state => <option key={state} value={state}>{state}</option>)}
                                                 </select>
                                             </div>
                                             <div>
-                                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block ml-1">District</label>
-                                                <select name="district" className="input-premium w-full px-5 py-3 rounded-xl text-sm font-semibold" value={formData.district} onChange={handleInputChange} disabled={!formData.state}>
+                                                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 block ml-1">District</label>
+                                                <select name="district" className="input-premium w-full px-5 py-3 rounded-xl text-sm font-semibold dark:bg-slate-800 dark:text-white dark:border-slate-700" value={formData.district} onChange={handleInputChange} disabled={!formData.state}>
                                                     <option value="">Select</option>
                                                     {availableDistricts.map(d => <option key={d} value={d}>{d}</option>)}
                                                 </select>
@@ -494,12 +494,12 @@ export default function RegisterPage() {
                                         </div>
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
-                                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block ml-1">Pincode</label>
-                                                <input name="pincode" type="text" placeholder="110001" maxLength={6} className="input-premium w-full px-5 py-3 rounded-xl font-semibold" value={formData.pincode} onChange={handleInputChange} />
+                                                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 block ml-1">Pincode</label>
+                                                <input name="pincode" type="text" placeholder="110001" maxLength={6} className="input-premium w-full px-5 py-3 rounded-xl font-semibold dark:bg-slate-800 dark:text-white dark:border-slate-700" value={formData.pincode} onChange={handleInputChange} />
                                             </div>
                                             <div>
-                                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block ml-1">Profession</label>
-                                                <select name="profession" className="input-premium w-full px-5 py-3 rounded-xl text-sm font-semibold" value={formData.profession} onChange={handleInputChange}>
+                                                <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 block ml-1">Profession</label>
+                                                <select name="profession" className="input-premium w-full px-5 py-3 rounded-xl text-sm font-semibold dark:bg-slate-800 dark:text-white dark:border-slate-700" value={formData.profession} onChange={handleInputChange}>
                                                     <option value="">Select</option>
                                                     {availableProfessions.map(p => <option key={p} value={p}>{p}</option>)}
                                                 </select>
@@ -510,32 +510,32 @@ export default function RegisterPage() {
 
                                 {step === 4 && (
                                     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
-                                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100 relative overflow-hidden">
-                                            <div className="absolute top-0 right-0 p-4 opacity-10"><Sparkles size={80} className="text-blue-600" /></div>
-                                            <h3 className="font-bold text-blue-900 mb-4 text-lg">Review Profile</h3>
+                                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-indigo-950 p-6 rounded-2xl border border-blue-100 dark:border-blue-900 relative overflow-hidden">
+                                            <div className="absolute top-0 right-0 p-4 opacity-10"><Sparkles size={80} className="text-blue-600 dark:text-blue-400" /></div>
+                                            <h3 className="font-bold text-blue-900 dark:text-blue-100 mb-4 text-lg">Review Profile</h3>
 
                                             <div className="space-y-3">
-                                                <div className="flex justify-between border-b border-blue-100 pb-2">
-                                                    <span className="text-slate-500 text-sm">Name</span>
-                                                    <span className="font-bold text-slate-900">{formData.name}</span>
+                                                <div className="flex justify-between border-b border-blue-100 dark:border-blue-900 pb-2">
+                                                    <span className="text-slate-500 dark:text-slate-400 text-sm">Name</span>
+                                                    <span className="font-bold text-slate-900 dark:text-white">{formData.name}</span>
                                                 </div>
-                                                <div className="flex justify-between border-b border-blue-100 pb-2">
-                                                    <span className="text-slate-500 text-sm">Mobile</span>
-                                                    <span className="font-bold text-slate-900">+91 {formData.mobile}</span>
+                                                <div className="flex justify-between border-b border-blue-100 dark:border-blue-900 pb-2">
+                                                    <span className="text-slate-500 dark:text-slate-400 text-sm">Mobile</span>
+                                                    <span className="font-bold text-slate-900 dark:text-white">+91 {formData.mobile}</span>
                                                 </div>
-                                                <div className="flex justify-between border-b border-blue-100 pb-2">
-                                                    <span className="text-slate-500 text-sm">Location</span>
-                                                    <span className="font-bold text-slate-900">{formData.district}, {formData.state}</span>
+                                                <div className="flex justify-between border-b border-blue-100 dark:border-blue-900 pb-2">
+                                                    <span className="text-slate-500 dark:text-slate-400 text-sm">Location</span>
+                                                    <span className="font-bold text-slate-900 dark:text-white">{formData.district}, {formData.state}</span>
                                                 </div>
                                                 <div className="flex justify-between">
-                                                    <span className="text-slate-500 text-sm">Role</span>
-                                                    <span className="font-bold text-slate-900">{formData.profession}</span>
+                                                    <span className="text-slate-500 dark:text-slate-400 text-sm">Role</span>
+                                                    <span className="font-bold text-slate-900 dark:text-white">{formData.profession}</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="flex items-start gap-3 p-3">
-                                            <input type="checkbox" className="mt-1 w-5 h-5 accent-blue-600 rounded bg-white" defaultChecked />
-                                            <p className="text-xs text-slate-500 font-medium leading-relaxed">By creating an ID, I agree to the <span className="text-blue-600 underline">Terms of Service</span> and <span className="text-blue-600 underline">Privacy Policy</span> of Adhikar.</p>
+                                            <input type="checkbox" className="mt-1 w-5 h-5 accent-blue-600 rounded bg-white dark:bg-slate-800" defaultChecked />
+                                            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed">By creating an ID, I agree to the <span className="text-blue-600 dark:text-blue-400 underline">Terms of Service</span> and <span className="text-blue-600 dark:text-blue-400 underline">Privacy Policy</span> of Adhikar.</p>
                                         </div>
                                     </div>
                                 )}
@@ -544,7 +544,7 @@ export default function RegisterPage() {
                             {/* Navigation Buttons */}
                             <div className="flex justify-between items-center mt-8 pt-0">
                                 {step > 1 ? (
-                                    <button onClick={() => setStep(prev => prev - 1)} className="text-slate-400 hover:text-slate-600 flex items-center gap-2 transition-colors font-bold text-sm">
+                                    <button onClick={() => setStep(prev => prev - 1)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 flex items-center gap-2 transition-colors font-bold text-sm">
                                         <ChevronLeft size={16} /> Previous
                                     </button>
                                 ) : (
@@ -553,7 +553,7 @@ export default function RegisterPage() {
 
                                 <button
                                     onClick={step === 4 ? handleRegister : handleNext}
-                                    className="bg-slate-900 hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-slate-900/10 hover:shadow-blue-600/30 hover:-translate-y-1 transition-all flex items-center gap-2 group text-base"
+                                    className="bg-slate-900 dark:bg-blue-600 hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-slate-900/10 hover:shadow-blue-600/30 hover:-translate-y-1 transition-all flex items-center gap-2 group text-base"
                                 >
                                     {step === 4 ? 'Confirm & Create ID' : 'Continue'}
                                     {step < 4 && <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />}

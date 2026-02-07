@@ -4,9 +4,18 @@ import { laws } from "@/lib/data/laws";
 import { schemes } from "@/lib/data/schemes";
 
 export async function POST(req: Request) {
-    try {
-        const { situation, language } = await req.json();
+    let situation = '';
+    let language = 'English';
 
+    try {
+        const body = await req.json();
+        situation = body.situation;
+        language = body.language || 'English';
+    } catch (e) {
+        return NextResponse.json({ error: "Invalid Request: Body must be JSON" }, { status: 400 });
+    }
+
+    try {
         const apiKey = process.env.GOOGLE_GEMINI_API_KEY?.trim();
         if (!apiKey) {
             console.error("CRITICAL: GOOGLE_GEMINI_API_KEY is missing.");
@@ -78,9 +87,6 @@ export async function POST(req: Request) {
                 aiReason: "Recommended based on your situation."
             }));
 
-        // If AI matches nothing (unlikely with this model), fallback to at least showing something relevant via keywords
-        // (You could keep the old logic as a 'catch' block or secondary fallback here if needed)
-
         return NextResponse.json({
             relevantLaws,
             relevantSchemes,
@@ -91,18 +97,20 @@ export async function POST(req: Request) {
     } catch (error: any) {
         console.error("AI Analysis Error:", error);
 
-        // FALLBACK TO MOCK LOGIC IN CASE OF AI FAILURE (e.g. Quota/Network)
-        // Re-implementing a simplified version of the keyword match for resilience
-        const query = (await req.clone().json()).situation.toLowerCase();
+        // FALLBACK TO SIMPLE KEYWORD MATCHING
+        // Safe to use 'situation' here because we parsed it at the top
+        const query = (situation || "").toLowerCase();
+        const firstWord = query.split(' ')[0] || "general";
 
         const fallbackLaws = laws.filter(l =>
-            (l.title.en + l.description.en).toLowerCase().includes(query.split(' ')[0])
+            (l.title.en + l.description.en).toLowerCase().includes(firstWord)
         ).slice(0, 2);
 
         return NextResponse.json({
             relevantLaws: fallbackLaws,
             relevantSchemes: [],
-            aiExplanation: "We are having trouble accessing the AI legal brain explicitly, but here are some laws that might match."
+            aiExplanation: "We are currently experiencing high traffic with our AI Brain. Showing you some laws that might be relevant based on keywords.",
+            fallbackError: error.message
         });
     }
 }

@@ -227,11 +227,17 @@ export default function SituationPage() {
             });
 
             if (!response.ok) {
-                const errData = await response.json().catch(() => ({}));
+                console.error("API Error Status:", response.status, response.statusText);
+                const errData = await response.json().catch((e) => {
+                    console.error("JSON Parse Error:", e);
+                    return {};
+                });
+                console.error("API Error Body:", errData);
+
                 // If backend sent a specific explanation (like Deployment Error), throw that.
                 if (errData.aiExplanation) throw new Error(errData.aiExplanation);
                 if (errData.error) throw new Error(errData.error);
-                throw new Error('Analysis failed. Please check your connection.');
+                throw new Error(`Analysis failed (${response.status}). Please check your connection.`);
             }
 
             const data = await response.json();
