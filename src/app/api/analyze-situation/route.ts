@@ -95,7 +95,14 @@ export async function POST(req: Request) {
         });
 
     } catch (error: any) {
-        console.error("AI Analysis Error:", error);
+        console.error("AI Analysis Error - Full Details:", error);
+
+        // Check for specific API Key errors to help the user
+        if (error.message?.includes('API_KEY_INVALID') || error.message?.includes('403')) {
+            return NextResponse.json({
+                error: "Invalid API Key. Please check your .env.local file or Vercel settings."
+            }, { status: 403 });
+        }
 
         // FALLBACK TO SIMPLE KEYWORD MATCHING
         // Safe to use 'situation' here because we parsed it at the top
@@ -109,8 +116,7 @@ export async function POST(req: Request) {
         return NextResponse.json({
             relevantLaws: fallbackLaws,
             relevantSchemes: [],
-            aiExplanation: "We are currently experiencing high traffic with our AI Brain. Showing you some laws that might be relevant based on keywords.",
-            fallbackError: error.message
+            aiExplanation: `We are currently experiencing high traffic or connection issues with our AI Brain. Showing you some laws that might be relevant based on keywords. (Debug: ${error.message})`,
         });
     }
 }

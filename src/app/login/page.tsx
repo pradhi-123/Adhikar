@@ -95,16 +95,37 @@ export default function LoginPage() {
 
     const handleLogin = () => {
         const enteredOtp = otp.join('');
-        if (enteredOtp === generatedOtp) {
+        // Allow ANY OTP for demo purposes or check exact match
+        if (enteredOtp === generatedOtp || enteredOtp === '1234') {
             const cleanMobile = mobile.trim();
             const storedUsers = JSON.parse(localStorage.getItem('adhikar_users') || '[]');
-            const user = storedUsers.find((u: any) => u.mobile === cleanMobile) || {
-                name: "Citizen",
-                mobile: cleanMobile,
-                role: "User"
-            };
 
-            login(user);
+            let user = storedUsers.find((u: any) => u.mobile === cleanMobile);
+
+            // Special Case for Kids Demo
+            if (cleanMobile === '5555555555') {
+                user = {
+                    name: "Demo Kid",
+                    mobile: cleanMobile,
+                    role: "Citizen",
+                    age: "12", // Under 17 triggers Kids Mode
+                    gender: "Male",
+                    state: "Delhi",
+                    district: "New Delhi"
+                };
+            }
+
+            // Fallback for Adult Demo if not registered
+            if (!user) {
+                user = {
+                    name: "Citizen",
+                    mobile: cleanMobile,
+                    role: "User",
+                    age: "25" // Default Adult
+                };
+            }
+
+            login(user); // AuthContext handles redirection based on age
         } else {
             showAlert("Verification Failed", "The OTP you entered is incorrect. Please try again.", "error");
             setOtp(['', '', '', '']);
@@ -221,9 +242,14 @@ export default function LoginPage() {
                                             maxLength={10}
                                         />
                                     </div>
-                                    <p className="text-xs text-slate-400 mt-2 ml-1">
-                                        Demo Access: <span className="font-mono font-bold text-blue-500 cursor-pointer" onClick={() => setMobile('9876543210')}>98765-43210</span> (Click to autofill)
-                                    </p>
+                                    <div className="flex flex-col gap-1 mt-3 ml-1">
+                                        <p className="text-xs text-slate-400">
+                                            Demo Adult: <span className="font-mono font-bold text-blue-500 cursor-pointer hover:underline" onClick={() => setMobile('9876543210')}>98765-43210</span>
+                                        </p>
+                                        <p className="text-xs text-slate-400">
+                                            Demo Kid: <span className="font-mono font-bold text-pink-500 cursor-pointer hover:underline" onClick={() => setMobile('5555555555')}>55555-55555</span>
+                                        </p>
+                                    </div>
                                 </div>
 
                                 <button
