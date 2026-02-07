@@ -58,7 +58,8 @@ export default function LoginPage() {
         const storedUsers = JSON.parse(rawData || '[]');
         const userExists = storedUsers.some((u: any) => u.mobile === cleanMobile);
 
-        if (!userExists) {
+        // Allow demo numbers to bypass registration check
+        if (!userExists && cleanMobile !== '5555555555') {
             showAlert("Not Registered", `Mobile number ${cleanMobile} is not found. Please Register first.`, "error");
             return;
         }
