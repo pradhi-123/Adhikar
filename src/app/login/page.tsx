@@ -169,8 +169,8 @@ export default function LoginPage() {
                     </div>
 
                     <h1 className="text-7xl font-black text-white mb-6 leading-tight tracking-tight drop-shadow-lg">
-                        {t('auth.future_gov').split('.')[0]}<br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300">Governance.</span>
+                        {t('auth.hero_title_1')}<br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300">{t('auth.hero_title_2')}</span>
                     </h1>
 
                     <div className="flex gap-6 mt-6">
