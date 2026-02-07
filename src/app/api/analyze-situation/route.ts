@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     try {
         const { situation, language } = await req.json();
 
-        const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
+        const apiKey = process.env.GOOGLE_GEMINI_API_KEY?.trim();
         if (!apiKey) {
             console.error("CRITICAL: GOOGLE_GEMINI_API_KEY is missing.");
             return NextResponse.json({

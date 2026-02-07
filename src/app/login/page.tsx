@@ -185,36 +185,36 @@ export default function LoginPage() {
             </div>
 
             {/* Right Side */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative overflow-hidden bg-slate-50">
+            <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative overflow-hidden bg-slate-50 dark:bg-slate-950">
                 {/* Mobile Background Decor */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/20 rounded-full blur-[80px] mix-blend-multiply lg:hidden animate-pulse"></div>
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-400/20 rounded-full blur-[80px] mix-blend-multiply lg:hidden animate-pulse" style={{ animationDelay: '1s' }}></div>
 
-                <div className="absolute inset-0 dot-pattern opacity-30 -z-10"></div>
+                <div className="absolute inset-0 dot-pattern opacity-30 -z-10 dark:opacity-10"></div>
 
                 <div className="w-full max-w-[500px] relative z-10 holo-gradient-border p-[3px]">
-                    <div className="bg-white/90 backdrop-blur-xl p-10 sm:p-12 rounded-[2rem] shadow-2xl h-full">
+                    <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-10 sm:p-12 rounded-[2rem] shadow-2xl h-full">
 
                         <div className="mb-10 text-center lg:text-left">
                             <div className="flex items-center justify-center lg:justify-start gap-3 mb-6">
                                 <div className="p-2.5 bg-blue-600 rounded-xl text-white shadow-lg shadow-blue-600/30 font-bold">A</div>
-                                <span className="text-2xl font-black text-slate-900 tracking-tight">Adhikar<span className="text-blue-600">.</span></span>
+                                <span className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Adhikar<span className="text-blue-600">.</span></span>
                             </div>
-                            <h2 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">{t('auth.login_welcome')}</h2>
-                            <p className="text-slate-500 text-lg font-medium">{t('auth.login_ready')}</p>
+                            <h2 className="text-4xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">{t('auth.login_welcome')}</h2>
+                            <p className="text-slate-500 dark:text-slate-400 text-lg font-medium">{t('auth.login_ready')}</p>
                         </div>
 
                         {!showOtp ? (
                             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
                                 <div className="group">
-                                    <label className="block text-sm font-extrabold text-blue-600 mb-3 uppercase tracking-wider ml-1">{t('auth.mobile_label')}</label>
+                                    <label className="block text-sm font-extrabold text-blue-600 dark:text-blue-400 mb-3 uppercase tracking-wider ml-1">{t('auth.mobile_label')}</label>
                                     <div className="relative flex items-center transition-transform duration-300 group-hover:-translate-y-1">
                                         <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-l-2xl flex items-center justify-center text-white font-bold z-10">
                                             +91
                                         </div>
                                         <input
                                             type="tel"
-                                            className="w-full pl-20 pr-4 py-5 bg-white border-2 border-blue-500 rounded-2xl font-bold text-xl text-slate-900 shadow-xl shadow-blue-200/50 focus:border-purple-500 focus:outline-none transition-all"
+                                            className="w-full pl-20 pr-4 py-5 bg-white dark:bg-slate-800 border-2 border-blue-500 dark:border-blue-400 rounded-2xl font-bold text-xl text-slate-900 dark:text-white shadow-xl shadow-blue-200/50 dark:shadow-blue-900/20 focus:border-purple-500 focus:outline-none transition-all"
                                             placeholder="98765-43210"
                                             value={mobile}
                                             onChange={(e) => setMobile(e.target.value)}
@@ -228,17 +228,17 @@ export default function LoginPage() {
 
                                 <button
                                     onClick={handleGetOtp}
-                                    className="w-full py-5 bg-slate-900 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all text-lg flex items-center justify-center gap-3"
+                                    className="w-full py-5 bg-slate-900 dark:bg-blue-600 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all text-lg flex items-center justify-center gap-3"
                                 >
                                     {t('auth.get_otp')} <ArrowRight size={22} />
                                 </button>
                             </div>
                         ) : (
                             <div className="space-y-8 animate-in fade-in zoom-in-95 duration-500">
-                                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-3xl border border-blue-100 text-center">
-                                    <p className="text-sm font-bold text-blue-800 uppercase tracking-widest mb-1">{t('auth.otp_sent_to')}</p>
-                                    <p className="text-3xl font-black text-slate-900 tracking-tighter">+91 {mobile}</p>
-                                    <button onClick={() => setShowOtp(false)} className="text-xs font-bold text-blue-500 hover:text-blue-700 mt-3">{t('auth.change_number')}</button>
+                                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800 p-6 rounded-3xl border border-blue-100 dark:border-slate-700 text-center">
+                                    <p className="text-sm font-bold text-blue-800 dark:text-blue-400 uppercase tracking-widest mb-1">{t('auth.otp_sent_to')}</p>
+                                    <p className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">+91 {mobile}</p>
+                                    <button onClick={() => setShowOtp(false)} className="text-xs font-bold text-blue-500 hover:text-blue-400 mt-3">{t('auth.change_number')}</button>
                                 </div>
 
                                 <div className="flex gap-4 justify-center">
@@ -247,7 +247,7 @@ export default function LoginPage() {
                                             key={idx}
                                             ref={otpRefs[idx]}
                                             type="text"
-                                            className="w-16 h-20 text-center text-4xl font-black bg-white border-2 border-slate-100 rounded-2xl focus:border-indigo-500 focus:outline-none transition-all shadow-lg"
+                                            className="w-16 h-20 text-center text-4xl font-black bg-white dark:bg-slate-800 dark:text-white border-2 border-slate-100 dark:border-slate-700 rounded-2xl focus:border-indigo-500 focus:outline-none transition-all shadow-lg"
                                             value={digit}
                                             onChange={(e) => handleOtpChange(idx, e.target.value)}
                                             onKeyDown={(e) => handleKeyDown(idx, e)}
@@ -265,16 +265,16 @@ export default function LoginPage() {
                             </div>
                         )}
 
-                        <div className="mt-8 pt-6 border-t border-slate-200/50">
+                        <div className="mt-8 pt-6 border-t border-slate-200/50 dark:border-slate-700">
                             <Link href="/register">
-                                <div className="relative bg-white p-4 rounded-xl flex items-center justify-between border border-slate-100 hover:bg-slate-50 transition-colors cursor-pointer shadow-sm hover:shadow-md">
+                                <div className="relative bg-white dark:bg-slate-800 p-4 rounded-xl flex items-center justify-between border border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors cursor-pointer shadow-sm hover:shadow-md">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
+                                        <div className="w-12 h-12 bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center">
                                             <UserPlus size={20} />
                                         </div>
                                         <div>
-                                            <h3 className="font-bold text-slate-900">{t('auth.new_user')}</h3>
-                                            <p className="text-xs font-bold text-blue-600 tracking-widest uppercase">{t('auth.start_reg')}</p>
+                                            <h3 className="font-bold text-slate-900 dark:text-white">{t('auth.new_user')}</h3>
+                                            <p className="text-xs font-bold text-blue-600 dark:text-blue-400 tracking-widest uppercase">{t('auth.start_reg')}</p>
                                         </div>
                                     </div>
                                     <ChevronRight size={18} className="text-slate-400" />
